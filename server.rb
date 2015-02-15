@@ -8,6 +8,9 @@ require 'dotenv'
 require "aws/s3"
 require 'active_record'
 
+require 'sinatra/activerecord'
+# require './environments'
+
 set :port, 8084
 # set :bind, '0.0.0.0'
 counter = 0
@@ -16,19 +19,18 @@ shadow_offset = 4 #offset for shadow
 
 Dotenv.load
 
-ActiveRecord::Base.establish_connection(
-   :adapter  => "mysql2",
-   :host     => "host",
-   :username => ENV['active_record_username'],
-   :password => ENV['active_record_password'],
-   :database => ENV['active_record_db']
-)
+set :database, {adapter: "sqlite3", database: "db/development.sqlite3"}
 
-class User < ActiveRecord::Base
+class ChristmasOrnament < Sinatra::Base
+   register Sinatra::ActiveRecordExtension
 end
 
-ActiveRecord::Migration.create_table :users do |t|
-   t.string :name
+class Member < ActiveRecord::Base
+   has_many :photos, dependent: :destroy
+end
+
+class Photo < ActiveRecord::Base
+   belongs_to :member
 end
 
 client = Twilio::REST::Client.new ENV['account_sid'], ENV['auth_token']
@@ -72,7 +74,7 @@ post "/" do
       client.messages.create(
          from: params["To"],
          to: params["From"],
-         body: "Thanks for your image and message!  Here is what it will look like on their ornament.  If you like it, send an *OK* to this number.  If not, resend another image and message!"
+         body: "Thanks for your image and message!  Here is what it will look like on their ornament.  If you like it, send an *OK* to this number.  If not, resend another image and message!",
          media_url: "https://#{ENV['BUCKET']}.s3.amazonaws.com/#{filename}"
       )
    elsif params["MediaUrl0"].nil? && params["Body"].downcase == "ok"
