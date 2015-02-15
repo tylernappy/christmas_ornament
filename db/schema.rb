@@ -11,7 +11,13 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150215192640) do
+ActiveRecord::Schema.define(version: 20150215204046) do
+
+  create_table "generated_photos", force: :cascade do |t|
+    t.integer "original_photo_id"
+    t.string  "aws_url"
+    t.boolean "confirmed"
+  end
 
   create_table "members", force: :cascade do |t|
     t.string "name"
@@ -19,11 +25,11 @@ ActiveRecord::Schema.define(version: 20150215192640) do
     t.string "phone_number"
   end
 
-  create_table "photos", force: :cascade do |t|
+  create_table "original_photos", force: :cascade do |t|
     t.integer "member_id"
     t.string  "phone_number"
     t.string  "aws_url"
-    t.boolean "confirmed"
+    t.string  "body"
   end
 
   create_table "users", force: :cascade do |t|

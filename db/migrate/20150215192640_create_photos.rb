@@ -1,8 +1,7 @@
 class CreatePhotos < ActiveRecord::Migration
   def change
-     create_table :photos do |t|
-        t.integer :member_id
-        t.string :phone_number
+     create_table :generated_photos do |t|
+        t.integer :original_photo_id
         t.string :aws_url
         t.boolean :confirmed
      end
