@@ -6,6 +6,7 @@ require 'mini_magick'
 require 'twilio-ruby'
 require 'dotenv'
 require "aws/s3"
+require 'active_record'
 
 set :port, 8084
 # set :bind, '0.0.0.0'
@@ -14,6 +15,21 @@ c_height = 0.20 #image placing constant
 shadow_offset = 4 #offset for shadow
 
 Dotenv.load
+
+ActiveRecord::Base.establish_connection(
+   :adapter  => "mysql2",
+   :host     => "host",
+   :username => ENV['active_record_username'],
+   :password => ENV['active_record_password'],
+   :database => ENV['active_record_db']
+)
+
+class User < ActiveRecord::Base
+end
+
+ActiveRecord::Migration.create_table :users do |t|
+   t.string :name
+end
 
 client = Twilio::REST::Client.new ENV['account_sid'], ENV['auth_token']
 
