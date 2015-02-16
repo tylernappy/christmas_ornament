@@ -1,6 +1,5 @@
 source "https://rubygems.org"
 gem 'httmultiparty'
-gem 'debugger'
 # gem 'open-uri'
 gem 'mini_magick'
 gem 'twilio-ruby'
@@ -16,6 +15,7 @@ gem 'sinatra-redirect-with-flash'
 gem 'rake'
 
 group :development do
+   gem 'debugger'
    gem 'sqlite3'
    gem "tux"
 end
