@@ -44,7 +44,7 @@ AWS::S3::Base.establish_connection!(
    :secret_access_key => ENV['AWS_SECRET_KEY']
 )
 
-post "/" do
+post "/email_processor" do
    # params = JSON.parse(request.body.read)
    # debugger
    puts "Text received from #{params['From']}"
@@ -130,6 +130,12 @@ post "/" do
       )
    end
 end
+
+get "/" do
+   
+end
+
+
 
 def generate_image url, body, count
    image = MiniMagick::Image.open(url)
