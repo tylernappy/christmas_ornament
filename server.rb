@@ -67,13 +67,14 @@ post "/" do
          generated_photo = original_photo.generated_photos.create({aws_url: "https://#{ENV['BUCKET']}.s3.amazonaws.com/#{filename}", confirmed: false})
          AWS::S3::S3Object.store(filename, File.binread(image.path), ENV['BUCKET'], :access => :public_read)
 
+         puts "Begin sending generated image..."
          client.messages.create(
             from: member.phone_number,
             to: params["From"],
             body: "Thanks for your image and message!  Here is what it will look like on their ornament.  If you like it, send an OK to this number. If you want it redone, send a REDO to this number.",
             media_url: generated_photo.aws_url
          )
-         puts "sent generated image"
+         puts "Sent generated image"
       elsif  params["NumMedia"].to_i == 0 && params["Body"].downcase == "redo"
          puts "REDO detected"
          original_photo = member.original_photos.where(phone_number: params["From"]).last
@@ -83,12 +84,14 @@ post "/" do
          filename = "#{member.id}_#{bin_key}.jpg"
          generated_photo = original_photo.generated_photos.create({aws_url: "https://#{ENV['BUCKET']}.s3.amazonaws.com/#{filename}", confirmed: false})
          AWS::S3::S3Object.store(filename, File.binread(image.path), ENV['BUCKET'], :access => :public_read)
+         puts "Begin sending generated image..."
          client.messages.create(
             from: member.phone_number,
             to: params["From"],
             body: "Here is your redone image!  If you like this one, text OK to this number. If you want it redone, send a REDO to this number.",
             media_url: generated_photo.aws_url
          )
+         puts "Sent generated image"
       elsif params["NumMedia"].to_i == 0 && params["Body"].downcase == "ok"
          puts "OK detected"
          #Do stuff if it sender wants it to be posted
@@ -96,23 +99,27 @@ post "/" do
          generated_photo = member.original_photos.where(phone_number: params["From"]).last.generated_photos.last
          generated_photo.update_attributes!(confirmed: true)
          res = HTTMultiParty.get(generated_photo.aws_url) #get binary from image
+         puts "Begin sending generated image..."
          client.messages.create(
             from: member.phone_number,
             to: params["From"],
             body: "This is the photo that will be displayed on your friends ornament. Thanks for texting in!",
             media_url: generated_photo.aws_url
          )
+         puts "Sent generated image"
          puts "beginning POST request..."
          response = HTTMultiParty.post("http://#{member.ip}:3000", :query => {:image => res.parsed_response, :counter => counter })#post binary to raspberry pi
          puts "Finished POST request."
       else
          puts "No image sent. Try again"
          # sends error message to original sender
+         puts "Begin sending message image..."
          client.messages.create(
             from: params["To"],
             to: params["From"],
             body: "Oops!  Looked like you didn't include an image.  In the same message, send both an image and a message you would like displayed on the image."
          )
+         puts "Sent message"
       end
    else
       client.messages.create(
