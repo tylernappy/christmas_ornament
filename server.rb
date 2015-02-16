@@ -46,6 +46,7 @@ AWS::S3::Base.establish_connection!(
 
 post "/" do
    # params = JSON.parse(request.body.read)
+   # debugger
    puts "Text received from #{params['From']}"
    counter += 1
    path = "/Users/tylernappy/Documents/photos/imagemagickimage_1_#{counter}.jpg"
@@ -159,3 +160,5 @@ def save_it_all (image_bytes)
 end
 # image = HTTMultiParty.get(params["MediaUrl0"])
 # File.open("/Users/tylernappy/Documents/photos/test#{counter}.jpg", 'w') {|e| e.write(image.parsed_response) }
+
+# AWS::S3::Bucket.find("ornament")
