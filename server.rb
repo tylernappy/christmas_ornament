@@ -102,8 +102,9 @@ post "/" do
             body: "This is the photo that will be displayed on your friends ornament. Thanks for texting in!",
             media_url: generated_photo.aws_url
          )
+         puts "beginning POST request..."
          response = HTTMultiParty.post("http://#{member.ip}:3000", :query => {:image => res.parsed_response, :counter => counter })#post binary to raspberry pi
-         puts "did POST request!"
+         puts "Finished POST request."
       else
          puts "No image sent. Try again"
          # sends error message to original sender
