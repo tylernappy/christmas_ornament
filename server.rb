@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'httmultiparty'
-require 'debugger'
+# require 'debugger' #take out in production
 require 'open-uri'
 require 'mini_magick'
 require 'twilio-ruby'
