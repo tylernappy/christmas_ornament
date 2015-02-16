@@ -18,7 +18,7 @@ $shadow_offset = 4 #offset for shadow
 
 Dotenv.load
 
-set :database, {adapter: "sqlite3", database: "db/development.sqlite3"}
+# set :database, {adapter: "sqlite3", database: "db/development.sqlite3"}
 
 class ChristmasOrnament < Sinatra::Base
    register Sinatra::ActiveRecordExtension
