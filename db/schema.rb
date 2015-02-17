@@ -32,8 +32,4 @@ ActiveRecord::Schema.define(version: 20150215204046) do
     t.string  "body"
   end
 
-  create_table "users", force: :cascade do |t|
-    t.string "name"
-  end
-
 end

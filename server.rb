@@ -1,6 +1,6 @@
 require 'sinatra'
 require 'httmultiparty'
-# require 'debugger' #take out in production
+require 'debugger' if Sinatra::Base.development?
 require 'open-uri'
 require 'mini_magick'
 require 'twilio-ruby'
@@ -44,7 +44,47 @@ AWS::S3::Base.establish_connection!(
    :secret_access_key => ENV['AWS_SECRET_KEY']
 )
 
-post "/email_processor" do
+get "/" do
+   erb :index
+end
+
+get "/register" do
+   erb :register
+end
+
+post "/register/create" do
+   ip = lookup_ip(params[:bin_key])
+   phone_number = "+"
+   # phone_number = "+15164505983"
+   # phone_number = #buy Twiio number
+   member = Member.create({name: params[:name], ip: ip, phone_number: phone_number})
+   redirect to("/member/#{member.id}")
+end
+
+def lookup_ip(bin_key)
+   #actually do stuff to lookup ip address from database of exisitng hardware
+   ip = "192.168.1.135"
+   return ip
+end
+
+get "/member/:id" do
+   @member = Member.find_by_id(params[:id])
+   @generated_photos = find_generated_photos(@member)
+   erb :member
+end
+
+def find_generated_photos (member)
+   generated_photos_array = []
+   member.original_photos.each do |op|
+      op.generated_photos.each do |gp|
+         generated_photos_array << gp if gp.confirmed == true
+      end
+   end
+   return generated_photos_array
+end
+
+##TEXT PROCESSOR
+post "/text_processor" do
    # params = JSON.parse(request.body.read)
    # debugger
    puts "Text received from #{params['From']}"
@@ -57,14 +97,14 @@ post "/email_processor" do
          ##Store original image
          res = HTTMultiParty.get(params["MediaUrl0"])
          bin_key = generate_random_string
-         filename = "#{member.id}_#{bin_key}.jpg"
+         filename = "#{DateTime.now.to_formatted_s(:iso8601)}_#{member.id}.jpg"
          original_photo = member.original_photos.create({phone_number: params["From"], aws_url: "https://#{ENV['BUCKET']}.s3.amazonaws.com/#{filename}", body: params["Body"]})
          AWS::S3::S3Object.store(filename, res.parsed_response, ENV['BUCKET'], :access => :public_read)
 
          ##Generate image
          image = generate_image(params["MediaUrl0"], params["Body"], original_photo.generated_photos.count)
          bin_key = generate_random_string
-         filename = "#{member.id}_#{bin_key}.jpg"
+         filename = "#{DateTime.now.to_formatted_s(:iso8601)}_#{member.id}.jpg"
          generated_photo = original_photo.generated_photos.create({aws_url: "https://#{ENV['BUCKET']}.s3.amazonaws.com/#{filename}", confirmed: false})
          AWS::S3::S3Object.store(filename, File.binread(image.path), ENV['BUCKET'], :access => :public_read)
 
@@ -82,7 +122,7 @@ post "/email_processor" do
          ##Generate image
          image = generate_image(original_photo.aws_url, original_photo.body,  original_photo.generated_photos.count)
          bin_key = generate_random_string
-         filename = "#{member.id}_#{bin_key}.jpg"
+         filename = "#{DateTime.now.to_formatted_s(:iso8601)}_#{member.id}.jpg"
          generated_photo = original_photo.generated_photos.create({aws_url: "https://#{ENV['BUCKET']}.s3.amazonaws.com/#{filename}", confirmed: false})
          AWS::S3::S3Object.store(filename, File.binread(image.path), ENV['BUCKET'], :access => :public_read)
          puts "Begin sending generated image..."
@@ -131,12 +171,6 @@ post "/email_processor" do
    end
 end
 
-get "/" do
-   
-end
-
-
-
 def generate_image url, body, count
    image = MiniMagick::Image.open(url)
    image.combine_options do |c|
@@ -160,10 +194,12 @@ end
 
 def save_it_all (image_bytes)
    bin_key = generate_random_string
-   filename = "#{member.id}_#{bin_key}.jpg"
+   filename = "#{DateTime.now.to_formatted_s(:iso8601)}_#{member.id}.jpg"
    original_photo.generated_photos.create!({aws_url: "https://#{ENV['BUCKET']}.s3.amazonaws.com/#{filename}", confirmed: false})
    AWS::S3::S3Object.store(filename, bytes, ENV['BUCKET'], :access => :public_read)
 end
+##
+
 # image = HTTMultiParty.get(params["MediaUrl0"])
 # File.open("/Users/tylernappy/Documents/photos/test#{counter}.jpg", 'w') {|e| e.write(image.parsed_response) }
 

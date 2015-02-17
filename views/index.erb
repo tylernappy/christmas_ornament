@@ -1,0 +1,122 @@
+<head>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <!-- <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script> -->
+   <script src="./js/jquery.nav.js"></script>
+   <script src="./js/jquery.scrollTo.js"></script>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+   <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+   <link rel="stylesheet" type="text/css" href="./css/main.css"></style>
+</head>
+
+<nav id="navigation">
+   <ul id="topnav">
+      <li class="current"><a href="#top">eFrame</a></li>
+   </ul>
+</nav>
+<br />
+<br />
+<br />
+<a href="/register" class="btn doit">Register</a>
+
+<div id="content">
+   <!-- Begin sections -->
+
+   <!-- Code + Engineers -->
+   <section id="top">
+      <video autoplay loop muted id="bgvid">
+         <!-- <source src="http://video.webmfiles.org/big-buck-bunny_trailer.webm" type="video/webm">
+      --><source src="https://ia801605.us.archive.org/0/items/NycTrafficTimeLapse/NycTrafficH264.mp4" type="video/mp4">
+      </video>
+      <div class="wrapper code">
+         <div class="row">
+            <div class="col-xs-12 text-center banner">APIs + Engineers</div>
+         </div>
+      </div>
+   </section><!-- /Code + Engineers -->
+</div>
+
+
+<!-- for scrolling nav bar -->
+<script type="text/javascript">
+   // setInterval(function(){
+   //    $('#navigation').onePageNav({
+   //       currentClass: 'current',
+   //       changeHash: false,
+   //       scrollSpeed: 750,
+   //       scrollOffset: 30,
+   //       scrollThreshold: 0.5,
+   //       filter: '',
+   //       easing: 'swing',
+   //       begin: function() {
+   //          //I get fired when the animation is starting
+   //       },
+   //       end: function() {
+   //          //I get fired when the animation is ending
+   //       },
+   //       scrollChange: function($currentListItem) {
+   //          //I get fired when you enter a section and I pass the list item of the section
+   //       }
+   //    });
+   // },3000);
+   $('#navigation').onePageNav({
+      currentClass: 'current',
+      changeHash: false,
+      scrollSpeed: 750,
+      scrollOffset: 30,
+      scrollThreshold: 0.5,
+      filter: '',
+      easing: 'swing',
+      begin: function() {
+         //I get fired when the animation is starting
+      },
+      end: function() {
+         //I get fired when the animation is ending
+      },
+      scrollChange: function($currentListItem) {
+         //I get fired when you enter a section and I pass the list item of the section
+      }
+   });
+</script>
+
+<script type="text/javascript">
+   // vpw = $(window).width();
+   // vph = $(window).height();
+   // var windowHeightThreshold = 700;
+   // // var windowHeightThreshold = 10520;
+   // // 10520
+   // var buffer = 200;
+   // if (vph > windowHeightThreshold) {
+   //   // $('#code-engineers').height(vph+buffer);
+   //   $('#code-engineers').height(700);
+   //
+   //   // $('#what-is-it').height(vph+buffer);
+   //   // $('#where').height(vph+buffer);
+   //   // $('#sponsors').height(vph+buffer);
+   //   // $('#signup').height(vph+buffer);
+   //   // $('#contact').height(vph); //end section of it
+   // }
+   // else {
+   //   $('#code-engineers').height(windowHeightThreshold+buffer);
+   //   // $('#what-is-it').height(windowHeightThreshold+buffer);
+   //   // $('#where').height(windowHeightThreshold+buffer);
+   //   // $('#sponsors').height(windowHeightThreshold+buffer);
+   //   // $('#signup').height(windowHeightThreshold+buffer);
+   //   // $('#contact').height(windowHeightThreshold); // end section
+   // }
+</script>
+<script type="text/javascript">
+   $(function(){  // $(document).ready shorthand
+      $('.banner').hide().delay(1000).fadeIn(1000);
+      // $('#nappy').hide().delay(2000).fadeIn(1000);
+      // $('#software-engineer').hide().delay(3000).fadeIn(1000);
+      $('#navigation').hide().delay(2000).fadeIn(1000);
+      $('.it').hide().delay(3000).fadeIn(1000);
+      $('.stuff').hide().delay(3000).fadeIn(1000);
+      $('#what-is-it').hide().delay(3000).fadeIn(1000);
+      $('#where-is-it').hide().delay(3000).fadeIn(1000);
+      $('#sponsors').hide().delay(3000).fadeIn(1000);
+      $('#signup').hide().delay(3000).fadeIn(1000);
+   });
+</script>

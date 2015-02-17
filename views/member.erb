@@ -1,0 +1,31 @@
+<head>
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+   <!-- <script src="https://code.jquery.com/ui/1.11.0/jquery-ui.min.js"></script> -->
+   <script src="./js/jquery.nav.js"></script>
+   <script src="./js/jquery.scrollTo.js"></script>
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+   <link href='https://fonts.googleapis.com/css?family=Ubuntu' rel='stylesheet' type='text/css'>
+   <link rel="stylesheet" type="text/css" href="./css/main.css"></style>
+</head>
+
+<div class="row">
+   <div class="col-xs-12 text-center"><h1>Hi <%= @member.name %></h1></div>
+</div>
+
+<div class="row">
+   <div class="col-xs-12 text-center"><p>Your phone number for friends and family to text photos into <%= @member.phone_number %></p></div>
+</div>
+
+<div class="row">
+   <div class="col-xs-12 text-center"><p>Here are photos that have been on your eFrame</p></div>
+</div>
+
+<% @generated_photos.each do |gp| %>
+   <div class="row">
+      <div class="col-xs-12 text-center">
+         <img src="<%= gp.aws_url %>" alt="eFrame" height="250">
+      </div>
+   </div>
+<% end %>
