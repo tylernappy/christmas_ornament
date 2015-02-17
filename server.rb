@@ -9,6 +9,7 @@ require "aws/s3"
 require 'active_record'
 require 'sinatra/activerecord'
 # require './environments'
+require 'bcrypt'
 
 set :port, 8085
 # set :bind, '0.0.0.0'
@@ -26,6 +27,17 @@ end
 
 class Member < ActiveRecord::Base
    has_many :original_photos, dependent: :destroy
+   # before_save :encrypt_password
+   # after_save :clear_password
+   # def encrypt_password
+   #    if password.present?
+   #       self.salt = BCrypt::Engine.generate_salt
+   #       self.encrypted_password= BCrypt::Engine.hash_secret(password, salt)
+   #    end
+   # end
+   # def clear_password
+   #    self.password = nil
+   # end
 end
 
 class OriginalPhoto < ActiveRecord::Base

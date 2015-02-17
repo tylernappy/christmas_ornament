@@ -23,6 +23,8 @@ ActiveRecord::Schema.define(version: 20150215204046) do
     t.string "name"
     t.string "ip"
     t.string "phone_number"
+    t.string "password"
+    t.string "email"
   end
 
   create_table "original_photos", force: :cascade do |t|

@@ -14,6 +14,8 @@ gem 'sinatra-flash'
 gem 'sinatra-redirect-with-flash'
 gem 'rake'
 
+gem 'bcrypt-ruby'
+
 group :development do
    gem 'debugger'
    gem 'sqlite3'

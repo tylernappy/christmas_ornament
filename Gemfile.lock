@@ -19,6 +19,9 @@ GEM
       builder
       mime-types
       xml-simple
+    bcrypt (3.1.9)
+    bcrypt-ruby (3.1.5)
+      bcrypt (>= 3.1.3)
     bond (0.5.1)
     builder (3.2.2)
     columnize (0.9.0)
@@ -94,6 +97,7 @@ PLATFORMS
 DEPENDENCIES
   activerecord
   aws-s3
+  bcrypt-ruby
   debugger
   dotenv
   httmultiparty
